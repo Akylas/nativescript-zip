@@ -1,6 +1,6 @@
-import * as observable from 'data/observable';
-import * as pages from 'ui/page';
-import * as fs from 'file-system';
+import * as observable from 'tns-core-modules/data/observable';
+import * as pages from 'tns-core-modules/ui/page';
+import * as fs from 'tns-core-modules/file-system';
 import { HelloWorldModel } from './main-view-model';
 
 import { Zip } from 'nativescript-zip';
@@ -15,6 +15,7 @@ export function pageLoaded(args: observable.EventData) {
 }
 
 const dest = fs.Folder.fromPath(fs.path.join(fs.knownFolders.temp().path, 'books'));
+const destZip = fs.Folder.fromPath(fs.path.join(fs.knownFolders.temp().path, 'test.zip'));
 
 export function unzip() {
   console.log(`begin unzip`);
@@ -27,6 +28,25 @@ export function unzip() {
     })
     .catch((err) => {
       console.log(`unzip error: ${err}`);
+    });
+}
+
+export function zip() {
+  let appPath = fs.knownFolders.currentApp().path;
+  let testZipFile = fs.path.join(appPath, 'toZip');
+  // Zip.unzip(testZipFile, appPath);
+  console.log(`zipping ${testZipFile} into ${destZip.path}`);
+  Zip.zip({
+    destination:destZip.path,
+    folderToArchive:testZipFile,
+    progressCallback:onZipProgress,
+    keepParentDirectory:false
+  })
+    .then(() => {
+      console.log(`zip succesfully completed: ${destZip.path}`);
+    })
+    .catch((err) => {
+      console.log(`zip error: ${err}`);
     });
 }
 

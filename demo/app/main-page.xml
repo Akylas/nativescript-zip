@@ -3,6 +3,7 @@
     <Label text="{{ message }}" class="message" textWrap="true"/>
     <Button text="Unzip!" tap="unzip" />
     <Button text="Print Files" tap="showFiles" />
+    <Button text="zip!" tap="zip" />
     <Progress value="{{ progress }}" />
   </StackLayout>
 </Page>
